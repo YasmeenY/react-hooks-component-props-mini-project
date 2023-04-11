@@ -1,26 +1,28 @@
 import React from "react";
 
-function Article({title, date, preview, minutes}){
-    let time = ""
-    let emoji = ""
-    const coffee = '☕️'
-    const bento = '🍱'
+function makeEmojiList(minutes) {
+    const interval = minutes < 30 ? 5 : 10;
+    const emoji = minutes < 30 ? "☕️" : "🍱";
 
-    if(minutes <= 30){
-        time = Math.round(minutes/5)
-        emoji = coffee 
+    let emojis = "";
+    for (let i = 0; i < minutes; i += interval) {
+        emojis += emoji;
     }
-    else{
-        time = Math.round(minutes/10)
-        emoji = bento
-    }
-    return(
-        <div>
+    return emojis;
+}
+
+function Article({ title, date = "January 1, 1970", preview, minutes }) {
+    const emojis = makeEmojiList(minutes);
+
+    return (
+        <article>
             <h3>{title}</h3>
-            <small>{date} {emoji.repeat(time)}</small>
+            <small>
+                {date} • {emojis} {minutes} min read
+            </small>
             <p>{preview}</p>
-        </div>
-    )
+        </article>
+    );
 }
 
 export default Article;
